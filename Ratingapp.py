@@ -10,7 +10,7 @@ ENV ='dev'
 
 if ENV == 'dev':
     app.debug=True
-    app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:''@localhost/project1py'
+    app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:'**********'@localhost/project1py'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 else:
