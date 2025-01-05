@@ -1,5 +1,8 @@
+#this is also a project1 
+
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from send_mail import send_mail
 
 app = Flask(__name__)
 
@@ -7,7 +10,7 @@ ENV ='dev'
 
 if ENV == 'dev':
     app.debug=True
-    app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:'**********'@localhost/project1py'
+    app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:''@localhost/project1py'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 else:
@@ -35,7 +38,7 @@ class Feedback(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('project1.html')
+    return render_template('project1_Html/project1.html')
 
 
 @app.route('/submit', methods=['POST'])
@@ -48,14 +51,15 @@ def submit():
 
         # print(customer,dealer,rating,comments)
         if customer == '' or dealer == '':
-            return render_template('project1.html', message='Please enter required fields')
+            return render_template('project1_Html/project1.html', message='Please enter required fields')
         
         if db.session.query(Feedback).filter(Feedback.customer == customer).count()==0:
             data = Feedback(customer,dealer,rating,comments)
             db.session.add(data)
             db.session.commit()
-            return render_template('project1_success.html')
-        return render_template('index.html', message = 'you have already submitted feedback')
+            send_mail(customer,dealer,rating,comments)
+            return render_template('project1_Html/project1_success.html')
+        return render_template('project1_Html/index.html', message = 'you have already submitted feedback')
 
 
 
